@@ -10,8 +10,8 @@
   ;;  by combining (reduce ...) (partial ...) and (join ...)
   (let [joiner (fn [xs] (reduce
                           (fn [cur_str cust] (clojure.string/join "," [cur_str (:name cust)]))
-                          (:name (first (:customers mall)))
-                          (rest (:customers mall))))
+                          (:name (first xs))
+                          (rest xs)))
         csv (joiner (:customers mall))]
 
     (is (= csv "Joe,Steven,Patrick,Diana,Chris,Kathy,Alice,Andrew,Martin,Amy"))))
@@ -31,8 +31,8 @@
                                                                                         (map
                                                                                           (fn [c]
                                                                                             [(:name c) (set (map :name (:wants-to-buy c)))])
-                                                                                          (:customers mall))))))])
-                                               (flatten (map #(map :name (:items %1)) (:shops mall))))))
+                                                                                          (:customers market))))))])
+                                               (flatten (map #(map :name (:items %1)) (:shops market))))))
         target-audience (audience-analyzer mall)]
 
     (is (= (target-audience "plane") #{"Chris"}))
